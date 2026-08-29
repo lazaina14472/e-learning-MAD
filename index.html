@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>eLearningMAD — Apprenez. Pratiquez. Progressez.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#F6F1E4;
+  --bg-alt:#FFFFFF;
+  --bg-raised:#FBF8F0;
+  --text:#152C2A;
+  --text-soft:#5B6E6A;
+  --accent:#C6501F;   /* terre cuite malgache */
+  --accent-soft:#F0DBC5;
+  --accent-2:#1F6E5C;  /* vert émeraude */
+  --accent-2-soft:#D7EAE3;
+  --gold:#D6A63C;
+  --border:#E4D9C3;
+  --danger:#B3392C;
+  --success:#1F6E5C;
+  --shadow: 0 8px 24px rgba(21,44,42,0.08);
+  --radius: 16px;
+  --font-display:'Fraunces', serif;
+  --font-body:'Inter', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+}
+[data-theme="dark"]{
+  --bg:#0E1917;
+  --bg-alt:#152624;
+  --bg-raised:#1B2E2B;
+  --text:#EDE7D9;
+  --text-soft:#9FB0AB;
+  --accent:#E07A45;
+  --accent-soft:#3A2A20;
+  --accent-2:#4FB89B;
+  --accent-2-soft:#1A332D;
+  --gold:#E5BC5E;
+  --border:#28403C;
+  --danger:#E0685A;
+  --success:#4FB89B;
+  --shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  transition:background .3s ease, color .3s ease;
+  min-height:100vh;
+  padding-bottom:60px;
+}
+img,svg{display:block; max-width:100%;}
+a{color:inherit; text-decoration:none;}
+button{font-family:inherit; cursor:pointer;}
+::selection{background:var(--accent-soft); color:var(--accent);}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+.container{max-width:1120px; margin:0 auto; padding:0 24px;}
+
+/* ============ HEADER ============ */
+header.site-header{
+  position:sticky; top:0; z-index:100;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+}
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 24px; max-width:1120px; margin:0 auto;
+}
+.logo{
+  font-family:var(--font-display);
+  font-weight:700; font-size:1.4rem;
+  display:flex; align-items:center; gap:8px;
+  letter-spacing:-0.01em;
+}
+.logo span.mad{ color:var(--accent); }
+nav.main-nav{display:flex; align-items:center; gap:4px;}
+.nav-link{
+  padding:8px 14px; border-radius:999px; font-weight:600; font-size:0.92rem;
+  color:var(--text-soft); border:none; background:transparent;
+  transition:all .2s ease;
+}
+.nav-link:hover{color:var(--text); background:var(--bg-raised);}
+.nav-link.active{color:var(--accent); background:var(--accent-soft);}
+.theme-toggle{
+  width:42px; height:42px; border-radius:50%;
+  border:1px solid var(--border); background:var(--bg-raised);
+  display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+  margin-left:8px;
+}
+.mobile-nav-toggle{display:none; background:none; border:none; font-size:1.5rem; color:var(--text);}
+
+/* ============ VIEWS ============ */
+.view{display:none; animation:fadeIn .35s ease;}
+.view.active{display:block;}
+@keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+/* ============ HOME HERO ============ */
+.hero{
+  padding:96px 24px 72px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 15% 20%, var(--accent-soft) 0%, transparent 45%),
+    radial-gradient(circle at 85% 15%, var(--accent-2-soft) 0%, transparent 40%);
+  opacity:.9; z-index:-1;
+}
+.hero-eyebrow{
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:.8rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--accent); background:var(--accent-soft);
+  padding:6px 16px; border-radius:999px; margin-bottom:28px;
+}
+.hero h1{
+  font-family:var(--font-display);
+  font-size:clamp(2.4rem, 6vw, 4.2rem);
+  font-weight:700; letter-spacing:-0.02em; line-height:1.05;
+  margin-bottom:20px;
+}
+.hero h1 .accent-word{ color:var(--accent); font-style:italic; }
+.hero p.lead{
+  font-size:1.15rem; color:var(--text-soft); max-width:560px; margin:0 auto 36px;
+}
+.btn{
+  display:inline-flex; align-items:center; gap:10px;
+  padding:15px 30px; border-radius:999px; border:none;
+  font-weight:700; font-size:1rem; cursor:pointer;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn-primary{ background:var(--accent); color:#fff; box-shadow:0 10px 24px -6px color-mix(in srgb, var(--accent) 60%, transparent); }
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 28px -6px color-mix(in srgb, var(--accent) 65%, transparent); }
+.btn-outline{ background:transparent; border:1.5px solid var(--border); color:var(--text); }
+.btn-outline:hover{ border-color:var(--accent); color:var(--accent); }
+.btn-sm{padding:10px 18px; font-size:.88rem; border-radius:999px;}
+.btn-block{width:100%; justify-content:center;}
+.btn:disabled{opacity:.45; cursor:not-allowed; transform:none !important;}
+
+.formations-strip{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:18px;
+  max-width:920px; margin:0 auto;
+}
+.strip-card{
+  background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius);
+  padding:24px 14px; text-align:center; transition:transform .2s ease, box-shadow .2s ease;
+}
+.strip-card:hover{ transform:translateY(-4px); box-shadow:var(--shadow); border-color:var(--accent); }
+.strip-card .flag{ font-size:2.1rem; margin-bottom:10px; }
+.strip-card .flabel{ font-weight:700; font-size:.95rem; }
+
+section.section{ padding:70px 24px; }
+.section-head{ text-align:center; max-width:600px; margin:0 auto 44px; }
+.section-head .eyebrow{
+  font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--accent-2);
+}
+.section-head h2{ font-family:var(--font-display); font-size:2.1rem; margin:8px 0 10px; }
+.section-head p{ color:var(--text-soft); }
+
+.how-grid{ display:grid; grid-template-columns:repeat(6,1fr); gap:10px; max-width:960px; margin:0 auto; }
+.how-step{
+  background:var(--bg-alt); border:1px solid var(--border); border-radius:12px; padding:16px 10px; text-align:center;
+}
+.how-step .n{ font-family:var(--font-mono); color:var(--accent); font-weight:600; font-size:.78rem; }
+.how-step .lbl{ font-weight:700; font-size:.85rem; margin-top:6px; }
+.how-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft);}
+
+/* ============ FORMATIONS PAGE ============ */
+.page-title-block{ padding:56px 24px 20px; text-align:center; }
+.page-title-block h1{ font-family:var(--font-display); font-size:clamp(2rem,4vw,2.7rem); }
+.page-title-block p{ color:var(--text-soft); margin-top:10px; }
+
+.formation-grid{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:22px; padding:20px 24px 70px; max-width:1120px; margin:0 auto;
+}
+.formation-card{
+  background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius);
+  padding:28px; display:flex; flex-direction:column; gap:14px;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.formation-card:hover{ transform:translateY(-4px); box-shadow:var(--shadow); }
+.formation-card .ficon{ font-size:2.4rem; }
+.formation-card h3{ font-family:var(--font-display); font-size:1.4rem; }
+.formation-card .fdesc{ color:var(--text-soft); font-size:.92rem; flex-grow:1; }
+.progress-bar-wrap{ background:var(--border); border-radius:999px; height:8px; overflow:hidden; }
+.progress-bar-fill{ height:100%; background:linear-gradient(90deg, var(--accent), var(--gold)); border-radius:999px; transition:width .5s ease; }
+.progress-label{ display:flex; justify-content:space-between; font-size:.78rem; color:var(--text-soft); font-weight:600; }
+
+/* ============ COURSE OUTLINE / PLAYER ============ */
+.breadcrumb{ font-size:.85rem; color:var(--text-soft); margin-bottom:6px; display:flex; gap:6px; flex-wrap:wrap; }
+.breadcrumb b{ color:var(--text); }
+
+.outline-layout{ display:grid; grid-template-columns:300px 1fr; gap:28px; padding:24px; max-width:1120px; margin:0 auto 60px; align-items:start; }
+.outline-side{
+  background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius); padding:18px; position:sticky; top:90px;
+  max-height:calc(100vh - 120px); overflow-y:auto;
+}
+.subject-group{ margin-bottom:6px; }
+.subject-group summary{
+  cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between;
+  font-weight:700; padding:10px 8px; border-radius:8px; font-size:.92rem;
+}
+.subject-group summary::-webkit-details-marker{display:none;}
+.subject-group summary:hover{ background:var(--bg-raised); }
+.subject-group[open] summary{ color:var(--accent); }
+.lesson-item{
+  display:flex; align-items:center; gap:10px; padding:9px 10px 9px 20px; border-radius:8px; font-size:.87rem;
+  color:var(--text-soft); cursor:pointer;
+}
+.lesson-item:hover{ background:var(--bg-raised); }
+.lesson-item.current{ background:var(--accent-soft); color:var(--accent); font-weight:700; }
+.lesson-item .lstate{ width:16px; text-align:center; flex-shrink:0; }
+.lesson-item.locked{ cursor:not-allowed; opacity:.55; }
+
+.lesson-panel{
+  background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius); padding:36px;
+}
+.lesson-panel h2{ font-family:var(--font-display); font-size:1.9rem; margin:6px 0 18px; }
+.lesson-tag{
+  display:inline-block; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
+  background:var(--accent-2-soft); color:var(--accent-2); padding:4px 10px; border-radius:999px; margin-bottom:8px;
+}
+.lesson-content p{ margin-bottom:14px; color:var(--text); }
+.lesson-content code, .code-block{
+  font-family:var(--font-mono); background:var(--bg-raised); border:1px solid var(--border);
+}
+.code-block{ display:block; padding:16px 18px; border-radius:10px; font-size:.85rem; overflow-x:auto; margin:16px 0; white-space:pre; }
+.lesson-content code{ padding:2px 6px; border-radius:5px; font-size:.85em; }
+.lesson-actions{ display:flex; gap:12px; margin-top:28px; flex-wrap:wrap; }
+
+.empty-state{ text-align:center; padding:60px 20px; color:var(--text-soft); }
+.empty-state .big-emoji{ font-size:3rem; margin-bottom:14px; }
+
+/* ============ QUIZ ============ */
+.quiz-wrap{ max-width:680px; margin:0 auto; padding:24px; }
+.quiz-card{ background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius); padding:36px; }
+.quiz-meta{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; font-size:.85rem; color:var(--text-soft); font-weight:600; }
+.quiz-progress-dots{ display:flex; gap:6px; margin-bottom:26px; }
+.qdot{ height:6px; flex:1; border-radius:999px; background:var(--border); }
+.qdot.filled{ background:var(--accent); }
+.qdot.wrong{ background:var(--danger); }
+.question-block h3{ font-size:1.25rem; margin-bottom:20px; font-family:var(--font-display); }
+.options-list{ display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+.option-btn{
+  text-align:left; padding:14px 18px; border-radius:12px; border:1.5px solid var(--border);
+  background:var(--bg-raised); font-size:.95rem; font-weight:600; color:var(--text);
+  display:flex; align-items:center; gap:12px; transition:all .15s ease;
+}
+.option-btn:hover:not(:disabled){ border-color:var(--accent); }
+.option-btn .letter{
+  width:26px; height:26px; border-radius:50%; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center;
+  font-size:.78rem; flex-shrink:0;
+}
+.option-btn.correct{ background:var(--accent-2-soft); border-color:var(--success); color:var(--success); }
+.option-btn.correct .letter{ background:var(--success); border-color:var(--success); color:#fff; }
+.option-btn.incorrect{ background:color-mix(in srgb, var(--danger) 12%, var(--bg-raised)); border-color:var(--danger); color:var(--danger); }
+.option-btn.incorrect .letter{ background:var(--danger); border-color:var(--danger); color:#fff; }
+.option-btn:disabled{ cursor:default; }
+
+.quiz-result{ text-align:center; padding:20px 0; }
+.quiz-result .result-emoji{ font-size:3.4rem; margin-bottom:12px; }
+.quiz-result h3{ font-family:var(--font-display); font-size:1.6rem; margin-bottom:8px; }
+.quiz-result p{ color:var(--text-soft); margin-bottom:24px; }
+.attempts-note{
+  margin-top:18px; font-size:.82rem; color:var(--text-soft); background:var(--bg-raised);
+  border:1px dashed var(--border); border-radius:10px; padding:10px 14px;
+}
+.attempts-note.warn{ border-color:var(--danger); color:var(--danger); }
+
+/* ============ PROGRESSION PAGE ============ */
+.prog-list{ max-width:820px; margin:0 auto; padding:0 24px 70px; display:flex; flex-direction:column; gap:16px; }
+.prog-row{ background:var(--bg-alt); border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; }
+.prog-row-head{ display:flex; align-items:center; gap:14px; margin-bottom:12px; }
+.prog-row-head .ic{ font-size:1.6rem; }
+.prog-row-head .name{ font-weight:700; font-family:var(--font-display); font-size:1.1rem; flex-grow:1; }
+.prog-row-head .pct{ font-weight:700; color:var(--accent); }
+.prog-detail{ margin-top:14px; font-size:.85rem; color:var(--text-soft); display:none; }
+.prog-detail.open{ display:block; }
+.prog-detail ul{ list-style:none; margin-top:8px; }
+.prog-detail li{ padding:4px 0; display:flex; gap:8px; align-items:center; }
+
+.danger-zone{ max-width:820px; margin:40px auto 0; padding:0 24px; }
+.danger-box{
+  border:1.5px dashed var(--danger); border-radius:var(--radius); padding:22px 24px;
+  display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+  background:color-mix(in srgb, var(--danger) 6%, transparent);
+}
+.danger-box .btn-danger{ background:var(--danger); color:#fff; }
+
+/* ============ FOOTER ============ */
+footer{ text-align:center; padding:40px 24px 10px; color:var(--text-soft); font-size:.85rem; }
+
+/* ============ TOAST ============ */
+.toast{
+  position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
+  background:var(--text); color:var(--bg); padding:14px 22px; border-radius:12px; font-weight:600; font-size:.9rem;
+  box-shadow:var(--shadow); z-index:999; opacity:0; pointer-events:none; transition:all .3s ease;
+}
+.toast.show{ opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* ============ MODAL ============ */
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(10,15,14,.55); display:none; align-items:center; justify-content:center; z-index:1000; padding:20px;
+}
+.modal-overlay.show{ display:flex; }
+.modal-box{ background:var(--bg-alt); border-radius:var(--radius); padding:30px; max-width:400px; width:100%; border:1px solid var(--border); }
+.modal-box h3{ font-family:var(--font-display); margin-bottom:10px; font-size:1.3rem; }
+.modal-box p{ color:var(--text-soft); margin-bottom:22px; font-size:.92rem; }
+.modal-actions{ display:flex; gap:10px; justify-content:flex-end; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 860px){
+  .outline-layout{ grid-template-columns:1fr; }
+  .outline-side{ position:static; max-height:none; }
+  .how-grid{ grid-template-columns:repeat(3,1fr); }
+  .how-arrow:nth-child(4n){ display:none; }
+}
+@media (max-width: 720px){
+  nav.main-nav{ display:none; position:absolute; top:100%; left:0; right:0; background:var(--bg); border-bottom:1px solid var(--border); flex-direction:column; padding:12px; gap:4px; }
+  nav.main-nav.open{ display:flex; }
+  .mobile-nav-toggle{ display:block; }
+  .formations-strip{ grid-template-columns:repeat(2,1fr); }
+  .how-grid{ grid-template-columns:repeat(3,1fr); }
+}
+@media (max-width: 520px){
+  .lesson-panel{ padding:22px; }
+  .quiz-card{ padding:22px; }
+  section.section{ padding:50px 18px; }
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+}
+</style>
+</head>
+<body data-theme="light">
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="logo">📘 eLearning<span class="mad">MAD</span></div>
+    <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="Ouvrir le menu">☰</button>
+    <nav class="main-nav" id="mainNav">
+      <button class="nav-link" data-route="home">Accueil</button>
+      <button class="nav-link" data-route="formations">Formations</button>
+      <button class="nav-link" data-route="progression">Ma progression</button>
+      <button class="nav-link" data-route="parametres">Paramètres</button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Changer de thème">🌙</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== HOME ===================== -->
+  <section id="view-home" class="view">
+    <div class="hero">
+      <span class="hero-eyebrow">✦ 100% gratuit — sans compte</span>
+      <h1>Apprenez. Pratiquez.<br><span class="accent-word">Progressez.</span></h1>
+      <p class="lead">Développez vos compétences en programmation et apprenez de nouvelles langues, à votre rythme, directement dans votre navigateur.</p>
+      <button class="btn btn-primary" data-route="formations">Découvrir les formations →</button>
+    </div>
+
+    <div class="container">
+      <div class="formations-strip" id="homeStrip"></div>
+    </div>
+
+    <section class="section">
+      <div class="section-head">
+        <span class="eyebrow">Comment ça marche</span>
+        <h2>Une progression pensée pour durer</h2>
+        <p>Chaque leçon se termine par un quiz. Réussissez-le à 100% pour débloquer la suite.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-step"><div class="n">01</div><div class="lbl">Formation</div></div>
+        <div class="how-arrow">→</div>
+        <div class="how-step"><div class="n">02</div><div class="lbl">Module</div></div>
+        <div class="how-arrow">→</div>
+        <div class="how-step"><div class="n">03</div><div class="lbl">Leçon</div></div>
+        <div class="how-step"><div class="n">04</div><div class="lbl">Exercice</div></div>
+        <div class="how-arrow">→</div>
+        <div class="how-step"><div class="n">05</div><div class="lbl">Quiz 100%</div></div>
+        <div class="how-arrow">→</div>
+        <div class="how-step"><div class="n">06</div><div class="lbl">Leçon suivante</div></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ===================== FORMATIONS ===================== -->
+  <section id="view-formations" class="view">
+    <div class="page-title-block">
+      <h1>Les formations</h1>
+      <p>Choisissez une formation pour commencer ou continuer votre progression.</p>
+    </div>
+    <div class="formation-grid" id="formationGrid"></div>
+  </section>
+
+  <!-- ===================== COURSE (OUTLINE + LESSON) ===================== -->
+  <section id="view-course" class="view">
+    <div class="page-title-block" style="padding-bottom:0;">
+      <div class="breadcrumb" id="courseBreadcrumb" style="justify-content:center;"></div>
+      <h1 id="courseTitle">Formation</h1>
+    </div>
+    <div class="outline-layout">
+      <aside class="outline-side" id="courseOutline"></aside>
+      <div id="lessonPanelWrap"></div>
+    </div>
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="view-quiz" class="view">
+    <div class="quiz-wrap" id="quizWrap"></div>
+  </section>
+
+  <!-- ===================== PROGRESSION ===================== -->
+  <section id="view-progression" class="view">
+    <div class="page-title-block">
+      <h1>Ma progression</h1>
+      <p>Suivez votre avancement dans chaque formation.</p>
+    </div>
+    <div class="prog-list" id="progList"></div>
+
+    <div class="danger-zone">
+      <div class="danger-box">
+        <div>
+          <strong>Réinitialiser ma progression</strong>
+          <div style="font-size:.85rem; color:var(--text-soft); margin-top:4px;">Supprime toutes vos leçons terminées, scores et tentatives.</div>
+        </div>
+        <button class="btn btn-sm btn-danger" id="resetBtn">Réinitialiser</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PARAMETRES ===================== -->
+  <section id="view-parametres" class="view">
+    <div class="page-title-block">
+      <h1>Paramètres</h1>
+      <p>Personnalisez votre expérience eLearningMAD.</p>
+    </div>
+    <div class="prog-list">
+      <div class="prog-row">
+        <div class="prog-row-head">
+          <span class="ic">🎨</span>
+          <span class="name">Apparence</span>
+        </div>
+        <div style="display:flex; gap:12px;">
+          <button class="btn btn-outline btn-sm" id="setLightBtn">☀️ Mode clair</button>
+          <button class="btn btn-outline btn-sm" id="setDarkBtn">🌙 Mode sombre</button>
+        </div>
+      </div>
+      <div class="prog-row">
+        <div class="prog-row-head">
+          <span class="ic">ℹ️</span>
+          <span class="name">À propos</span>
+        </div>
+        <p style="color:var(--text-soft); font-size:.9rem;">eLearningMAD est une plateforme 100% gratuite, sans compte ni serveur. Toutes vos données restent stockées localement dans votre navigateur (LocalStorage).</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>eLearningMAD — Plateforme frontend 100% gratuite · HTML + CSS + JavaScript</footer>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-box">
+    <h3>Réinitialiser la progression ?</h3>
+    <p>Cette action est irréversible. Toutes vos leçons terminées, quiz réussis et scores seront supprimés définitivement.</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline btn-sm" id="cancelReset">Annuler</button>
+      <button class="btn btn-sm btn-danger" id="confirmReset" style="background:var(--danger); color:#fff;">Oui, réinitialiser</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ==========================================================================
+   eLearningMAD — app.js (embarqué)
+   100% HTML + CSS + JavaScript — persistance via LocalStorage
+   ========================================================================== */
+
+/* ---------------------------- DONNÉES DES COURS ---------------------------- */
+// Génère des versions de quiz (A/B) pour éviter la répétition après 3 échecs.
+function q(text, options, correct){ return {text, options, correct}; }
+
+const DATA = {
+  programmation: {
+    name:"Programmation", icon:"💻",
+    desc:"HTML, CSS, JavaScript et tout l'écosystème du développement web moderne.",
+    lessons: [
+      { subject:"HTML", module:"Fondamentaux", title:"Qu'est-ce que le HTML ?",
+        content:`<p>Le <strong>HTML</strong> (HyperText Markup Language) est le langage qui structure le contenu d'une page web : titres, paragraphes, images, liens, formulaires...</p>
+        <p>Un document HTML est composé de <em>balises</em> imbriquées les unes dans les autres.</p>
+        <pre class="code-block">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;Ma page&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Bonjour !&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+        <p>Chaque balise a un rôle sémantique précis : <code>&lt;h1&gt;</code> pour un titre principal, <code>&lt;p&gt;</code> pour un paragraphe, <code>&lt;a&gt;</code> pour un lien.</p>`,
+        quiz:[[
+          q("Que signifie HTML ?", ["HyperText Markup Language","High Tech Modern Language","Home Tool Markup Language","HyperTransfer Made Language"],0),
+          q("Quelle balise crée un titre principal ?", ["&lt;title&gt;","&lt;h1&gt;","&lt;head&gt;","&lt;top&gt;"],1),
+          q("Quelle balise sert à créer un lien ?", ["&lt;link&gt;","&lt;a&gt;","&lt;href&gt;","&lt;go&gt;"],1)
+        ],[
+          q("Le HTML sert principalement à :", ["Styliser une page","Structurer le contenu d'une page","Gérer une base de données","Compiler du code"],1),
+          q("Quelle balise contient le texte visible de la page ?", ["&lt;body&gt;","&lt;head&gt;","&lt;meta&gt;","&lt;doctype&gt;"],0),
+          q("Quelle balise crée un paragraphe ?", ["&lt;p&gt;","&lt;par&gt;","&lt;text&gt;","&lt;pg&gt;"],0)
+        ]]
+      },
+      { subject:"HTML", module:"Fondamentaux", title:"Les formulaires HTML",
+        content:`<p>Les formulaires permettent de récolter des informations saisies par l'utilisateur grâce à la balise <code>&lt;form&gt;</code>.</p>
+        <pre class="code-block">&lt;form&gt;
+  &lt;input type="text" placeholder="Nom"&gt;
+  &lt;input type="email" placeholder="Email"&gt;
+  &lt;button type="submit"&gt;Envoyer&lt;/button&gt;
+&lt;/form&gt;</pre>
+        <p>L'attribut <code>type</code> de <code>&lt;input&gt;</code> détermine le type de champ : texte, email, mot de passe, case à cocher, etc.</p>`,
+        quiz:[[
+          q("Quelle balise crée un formulaire ?", ["&lt;input&gt;","&lt;form&gt;","&lt;field&gt;","&lt;data&gt;"],1),
+          q("Quel attribut définit le type d'un champ ?", ["kind","type","input-type","format"],1),
+          q("Quelle balise crée un bouton d'envoi ?", ["&lt;submit&gt;","&lt;button&gt;","&lt;send&gt;","&lt;action&gt;"],1)
+        ],[
+          q("type=\"email\" sert à :", ["Valider un format d'adresse email","Envoyer un email automatiquement","Créer un lien mailto","Afficher une image"],0),
+          q("Un formulaire sans backend peut :", ["Uniquement afficher des champs","Toujours envoyer un email","Se connecter obligatoirement à une base de données","Rien du tout"],0),
+          q("Quelle balise regroupe les champs d'un formulaire ?", ["&lt;form&gt;","&lt;group&gt;","&lt;set&gt;","&lt;wrap&gt;"],0)
+        ]]
+      },
+      { subject:"CSS", module:"Fondamentaux", title:"Le modèle de boîte (Box Model)",
+        content:`<p>En CSS, chaque élément est une boîte composée de : <strong>contenu</strong>, <strong>padding</strong>, <strong>border</strong> et <strong>margin</strong>.</p>
+        <pre class="code-block">.carte {
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin: 16px;
+}</pre>
+        <p>Comprendre le box model est essentiel pour maîtriser les espacements et la mise en page.</p>`,
+        quiz:[[
+          q("Quel ordre respecte le box model (de l'intérieur vers l'extérieur) ?", ["Margin, border, padding, contenu","Contenu, padding, border, margin","Border, contenu, margin, padding","Padding, margin, contenu, border"],1),
+          q("Quelle propriété ajoute de l'espace à l'intérieur d'un élément ?", ["margin","padding","gap","spacing"],1),
+          q("Quelle propriété ajoute de l'espace à l'extérieur d'un élément ?", ["padding","border","margin","outline"],2)
+        ],[
+          q("box-sizing: border-box permet de :", ["Inclure padding et border dans la largeur totale","Supprimer les bordures","Ajouter une ombre","Centrer un élément"],0),
+          q("Quelle propriété définit l'épaisseur du contour ?", ["margin","border","padding","outline-width"],1),
+          q("Le contenu d'une boîte est délimité par :", ["Le margin","Le padding et le border","La couleur de fond uniquement","Rien, il est infini"],1)
+        ]]
+      },
+      { subject:"CSS", module:"Fondamentaux", title:"Flexbox et responsive design",
+        content:`<p>Flexbox permet d'aligner et de répartir des éléments facilement dans un conteneur.</p>
+        <pre class="code-block">.conteneur {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}</pre>
+        <p>Combiné aux <em>media queries</em>, Flexbox permet de créer des designs responsives qui s'adaptent à toutes les tailles d'écran.</p>`,
+        quiz:[[
+          q("Quelle propriété active Flexbox ?", ["display: flex;","position: flex;","flex: on;","layout: flex;"],0),
+          q("Quelle propriété aligne les éléments horizontalement ?", ["justify-content","align-items","flex-wrap","order"],0),
+          q("Une media query sert à :", ["Adapter le style selon la taille d'écran","Charger une image","Créer une animation","Ajouter du son"],0)
+        ],[
+          q("align-items agit sur l'axe :", ["Principal","Transversal","Diagonal","Z"],1),
+          q("Quelle syntaxe cible les écrans de moins de 600px ?", ["@media (max-width: 600px)","@screen (max: 600px)","@responsive(600px)","@media < 600px"],0),
+          q("flex-wrap: wrap permet :", ["Le retour à la ligne des éléments","De masquer les éléments","D'inverser l'ordre","De supprimer les marges"],0)
+        ]]
+      },
+      { subject:"JavaScript", module:"Fondamentaux", title:"Variables et fonctions",
+        content:`<p>JavaScript permet de rendre une page interactive. On déclare des variables avec <code>let</code> ou <code>const</code>.</p>
+        <pre class="code-block">const nom = "Mad";
+let score = 0;
+
+function saluer(utilisateur) {
+  return "Bonjour " + utilisateur;
+}</pre>
+        <p><code>const</code> crée une constante non réassignable, <code>let</code> crée une variable modifiable.</p>`,
+        quiz:[[
+          q("Quel mot-clé déclare une variable réassignable ?", ["const","let","final","fix"],1),
+          q("Comment déclare-t-on une fonction ?", ["func maFonction()","function maFonction()","def maFonction()","fn maFonction()"],1),
+          q("const empêche :", ["La lecture de la variable","La réassignation de la variable","La création de fonctions","L'utilisation de boucles"],1)
+        ],[
+          q("Quel type de donnée est \"Bonjour\" en JavaScript ?", ["Number","String","Boolean","Object"],1),
+          q("Comment retourne-t-on une valeur depuis une fonction ?", ["send","return","output","give"],1),
+          q("let score = 0; puis score = 5; est :", ["Valide","Invalide","Une erreur de syntaxe","Impossible en JS"],0)
+        ]]
+      },
+      { subject:"JavaScript", module:"Fondamentaux", title:"LocalStorage et événements",
+        content:`<p>Le <code>localStorage</code> permet de sauvegarder des données dans le navigateur, même après fermeture.</p>
+        <pre class="code-block">localStorage.setItem("theme", "dark");
+const theme = localStorage.getItem("theme");</pre>
+        <p>Les événements permettent de réagir aux actions de l'utilisateur : clic, saisie, etc.</p>
+        <pre class="code-block">bouton.addEventListener("click", () => {
+  console.log("Bouton cliqué !");
+});</pre>`,
+        quiz:[[
+          q("Quelle méthode sauvegarde une donnée en LocalStorage ?", ["localStorage.save()","localStorage.setItem()","localStorage.write()","localStorage.store()"],1),
+          q("Quelle méthode écoute un clic ?", ["onClick()","addEventListener('click', fn)","listen('click')","click.on(fn)"],1),
+          q("Les données du LocalStorage sont supprimées :", ["À chaque fermeture du navigateur","Seulement si on les supprime explicitement (ou vidage du cache)","Toutes les 24h automatiquement","Jamais, même en cas de suppression manuelle"],1)
+        ],[
+          q("Quelle méthode récupère une donnée du LocalStorage ?", ["localStorage.fetch()","localStorage.read()","localStorage.getItem()","localStorage.load()"],2),
+          q("localStorage stocke les données sous quel format ?", ["Uniquement des chaînes de caractères","Des objets JavaScript natifs","Des fichiers binaires","Des tableaux uniquement"],0),
+          q("Pour stocker un objet, il faut utiliser :", ["JSON.stringify()","Object.save()","toString() uniquement","Rien, c'est automatique"],0)
+        ]]
+      },
+      { subject:"PHP", module:"Découverte", title:"Introduction à PHP",
+        content:`<p>PHP est un langage de programmation côté serveur, utilisé pour générer des pages web dynamiques et communiquer avec des bases de données.</p>
+        <pre class="code-block">&lt;?php
+  echo "Bonjour le monde";
+?&gt;</pre>
+        <p><strong>Note :</strong> PHP n'est ici qu'un sujet d'apprentissage. eLearningMAD elle-même ne repose sur aucun langage serveur.</p>`,
+        quiz:[[
+          q("PHP s'exécute principalement :", ["Dans le navigateur","Côté serveur","Dans le CSS","Dans le HTML uniquement"],1),
+          q("Comment commence un bloc de code PHP ?", ["&lt;script&gt;","&lt;?php","&lt;php&gt;","#php"],2),
+          q("PHP est souvent utilisé avec :", ["Une base de données","Uniquement des images","Le CSS exclusivement","Rien d'autre"],0)
+        ],[
+          q("La fonction echo sert à :", ["Afficher du contenu","Supprimer une variable","Se connecter à une base de données","Créer une boucle"],0),
+          q("PHP permet de générer :", ["Des pages statiques uniquement","Des pages web dynamiques","Uniquement des fichiers PDF","Des animations CSS"],1),
+          q("Un fichier PHP a pour extension :", [".html",".php",".js",".css"],1)
+        ]]
+      },
+      { subject:"XAMPP", module:"Découverte", title:"Introduction à XAMPP",
+        content:`<p>XAMPP est un environnement de développement local regroupant <strong>Apache</strong> (serveur web), <strong>MySQL</strong> (base de données) et <strong>PHP</strong>.</p>
+        <p>Il permet de tester des sites dynamiques sur son propre ordinateur avant de les mettre en ligne.</p>`,
+        quiz:[[
+          q("XAMPP regroupe notamment :", ["Apache, MySQL, PHP","React, Vue, Angular","HTML, CSS, JS uniquement","Git et GitHub"],0),
+          q("XAMPP est utilisé pour :", ["Le développement local","Le design graphique","La retouche photo","La création de vidéos"],0),
+          q("Le \"A\" de XAMPP désigne :", ["Apache","Android","API","Angular"],0)
+        ],[
+          q("XAMPP permet de tester un site :", ["Uniquement en ligne","Sur son propre ordinateur, en local","Sur un serveur payant obligatoirement","Sans jamais avoir besoin d'un navigateur"],1),
+          q("Quel composant de XAMPP gère les bases de données ?", ["Apache","PHP","MySQL","FTP"],2),
+          q("XAMPP est un outil :", ["Multiplateforme (Windows, Linux, Mac)","Réservé à Windows uniquement","Réservé à Mac uniquement","Un langage de programmation"],0)
+        ]]
+      },
+      { subject:"Node.js", module:"Découverte", title:"Introduction à Node.js",
+        content:`<p>Node.js permet d'exécuter du JavaScript côté serveur, en dehors du navigateur.</p>
+        <pre class="code-block">// server.js
+console.log("Serveur Node.js démarré");</pre>
+        <p>Il est souvent utilisé pour créer des API et des applications backend performantes.</p>`,
+        quiz:[[
+          q("Node.js permet d'exécuter JavaScript :", ["Uniquement dans le navigateur","Côté serveur","Dans Excel","Dans PowerPoint"],1),
+          q("Node.js est basé sur le moteur :", ["V8 (Chrome)","SpiderMonkey","Java Virtual Machine","PHP Engine"],0),
+          q("Node.js est souvent utilisé pour créer :", ["Des API et applications backend","Des feuilles de style","Des polices de caractères","Des fichiers PDF"],0)
+        ],[
+          q("Pour installer des paquets Node.js, on utilise généralement :", ["npm","XAMPP","Photoshop","FTP"],0),
+          q("Un fichier package.json sert à :", ["Décrire les dépendances d'un projet Node.js","Styliser une page","Stocker des images","Créer une base de données"],0),
+          q("Node.js est utile pour :", ["Le développement frontend uniquement","Le développement backend en JavaScript","Le montage vidéo","La conception graphique"],1)
+        ]]
+      },
+      { subject:"Express.js", module:"Découverte", title:"Introduction à Express.js",
+        content:`<p>Express.js est un framework pour Node.js qui simplifie la création de serveurs web et d'API.</p>
+        <pre class="code-block">const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => res.send('Bonjour !'));
+app.listen(3000);</pre>`,
+        quiz:[[
+          q("Express.js est un framework pour :", ["Node.js","PHP","Python","CSS"],0),
+          q("app.get('/') définit :", ["Une route pour la page d'accueil","Une variable globale","Un style CSS","Une base de données"],0),
+          q("Express.js facilite la création :", ["De serveurs web et d'API","D'animations CSS","De documents Word","De feuilles Excel"],0)
+        ],[
+          q("app.listen(3000) sert à :", ["Démarrer le serveur sur le port 3000","Fermer le serveur","Créer une base de données","Charger une image"],0),
+          q("Express.js appartient à l'écosystème :", ["JavaScript / Node.js","PHP","Java","Python"],0),
+          q("Une route dans Express.js correspond à :", ["Une URL associée à une action serveur","Une couleur CSS","Une balise HTML","Un fichier image"],0)
+        ]]
+      },
+      { subject:"PostgreSQL", module:"Découverte", title:"Introduction à PostgreSQL",
+        content:`<p>PostgreSQL est un système de gestion de base de données relationnelle (SGBDR), utilisé pour stocker et organiser des données de façon structurée.</p>
+        <pre class="code-block">SELECT * FROM utilisateurs WHERE actif = true;</pre>`,
+        quiz:[[
+          q("PostgreSQL est un système de :", ["Gestion de base de données","Design graphique","Retouche d'image","Création de sites statiques"],0),
+          q("Le langage utilisé pour interroger PostgreSQL est :", ["SQL","HTML","CSS","XML"],0),
+          q("SELECT * FROM sert à :", ["Sélectionner des données d'une table","Supprimer une table","Créer un fichier CSS","Compiler du code"],0)
+        ],[
+          q("PostgreSQL stocke les données sous forme de :", ["Tables relationnelles","Fichiers images","Feuilles de style","Pages HTML"],0),
+          q("PostgreSQL est un logiciel :", ["Open source","Uniquement payant","Un langage de programmation","Un navigateur web"],0),
+          q("Une base de données relationnelle relie les données via :", ["Des clés et des relations entre tables","Des couleurs","Des animations","Des polices"],0)
+        ]]
+      },
+      { subject:"Git", module:"Découverte", title:"Introduction à Git",
+        content:`<p>Git est un système de gestion de versions qui permet de suivre l'évolution du code au fil du temps.</p>
+        <pre class="code-block">git init
+git add .
+git commit -m "Premier commit"</pre>`,
+        quiz:[[
+          q("Git sert à :", ["Gérer les versions d'un projet","Créer des images","Héberger un site en ligne","Envoyer des emails"],0),
+          q("La commande git commit sert à :", ["Enregistrer un instantané des modifications","Supprimer le projet","Créer une base de données","Ouvrir un navigateur"],0),
+          q("git add . permet de :", ["Ajouter les fichiers modifiés à la zone de préparation","Supprimer tous les fichiers","Publier le site en ligne","Créer une nouvelle branche automatiquement"],0)
+        ],[
+          q("Une branche Git permet de :", ["Travailler sur une version parallèle du code","Supprimer le projet","Changer de langage de programmation","Modifier le CSS uniquement"],0),
+          q("Git est un outil de gestion de versions :", ["Décentralisé","Obligatoirement en ligne","Réservé à PHP","Payant"],0),
+          q("git init sert à :", ["Initialiser un dépôt Git dans un dossier","Envoyer le code en ligne","Supprimer l'historique","Créer un site web"],0)
+        ]]
+      },
+      { subject:"GitHub", module:"Découverte", title:"Introduction à GitHub",
+        content:`<p>GitHub est une plateforme d'hébergement de dépôts Git en ligne, facilitant la collaboration entre développeurs.</p>`,
+        quiz:[[
+          q("GitHub est une plateforme :", ["D'hébergement de dépôts Git","De retouche photo","De montage vidéo","De création de PDF"],0),
+          q("GitHub facilite :", ["La collaboration entre développeurs","La création de bases de données SQL","Le design UI uniquement","La compilation de PHP"],0),
+          q("Un \"pull request\" sur GitHub sert à :", ["Proposer des modifications de code à intégrer","Supprimer un dépôt","Changer de langage","Créer une image"],0)
+        ],[
+          q("GitHub est basé sur le logiciel :", ["Git","SVN","Docker","XAMPP"],0),
+          q("Un dépôt (repository) GitHub contient :", ["Le code source d'un projet et son historique","Uniquement des images","Une base de données SQL prête à l'emploi","Un serveur PHP"],0),
+          q("GitHub permet notamment de :", ["Suivre les problèmes (issues) d'un projet","Éditer des vidéos","Envoyer des factures","Créer des présentations PowerPoint"],0)
+        ]]
+      },
+      { subject:"Supabase", module:"Découverte", title:"Introduction à Supabase",
+        content:`<p>Supabase est une plateforme backend-as-a-service offrant base de données, authentification et API, basée sur PostgreSQL.</p>`,
+        quiz:[[
+          q("Supabase est basé sur :", ["PostgreSQL","MongoDB","MySQL uniquement","SQLite"],0),
+          q("Supabase propose notamment :", ["Base de données, authentification et API","Uniquement du design graphique","Uniquement de l'hébergement d'images","Uniquement du CSS"],0),
+          q("Supabase est une alternative open-source à :", ["Firebase","Photoshop","WordPress","Canva"],0)
+        ],[
+          q("Supabase peut fournir une API générée automatiquement :", ["Vrai","Faux","Seulement en PHP","Seulement en local"],0),
+          q("Supabase est un service de type :", ["Backend-as-a-Service","Design-as-a-Service","Video-as-a-Service","Frontend uniquement"],0),
+          q("Supabase permet de gérer :", ["L'authentification des utilisateurs","Uniquement les polices de caractères","Uniquement les animations CSS","Uniquement le HTML"],0)
+        ]]
+      },
+      { subject:"Render", module:"Découverte", title:"Introduction à Render",
+        content:`<p>Render est une plateforme d'hébergement en ligne permettant de déployer facilement des applications web, API et bases de données.</p>`,
+        quiz:[[
+          q("Render sert à :", ["Héberger et déployer des applications en ligne","Créer des animations CSS","Écrire du code HTML","Gérer des emails"],0),
+          q("Render peut héberger :", ["Des applications web, API et bases de données","Uniquement des images","Uniquement des fichiers PDF","Uniquement du CSS"],0),
+          q("Render est une alternative à :", ["Heroku","Photoshop","GitHub Desktop","Canva"],0)
+        ],[
+          q("Déployer une application signifie :", ["La mettre en ligne pour qu'elle soit accessible","La supprimer","La styliser","La traduire"],0),
+          q("Render peut se connecter à un dépôt :", ["GitHub pour un déploiement automatique","Uniquement local, jamais en ligne","Uniquement Word","Uniquement Excel"],0),
+          q("Render fait partie des outils de :", ["Déploiement / hébergement","Design UI","Montage vidéo","Retouche photo"],0)
+        ]]
+      }
+    ]
+  },
+
+  francais: {
+    name:"Français", icon:"🇫🇷",
+    desc:"Vocabulaire, grammaire, conjugaison et conversation, du niveau débutant à avancé.",
+    lessons:[
+      { subject:"Débutant", module:"Bases", title:"Se présenter",
+        content:`<p>Pour se présenter en français, on utilise des phrases simples :</p>
+        <p><em>« Je m'appelle Mad. »</em> — <em>« J'ai vingt ans. »</em> — <em>« J'habite à Antananarivo. »</em></p>
+        <p>Le verbe <strong>être</strong> est essentiel : je suis, tu es, il/elle est, nous sommes, vous êtes, ils/elles sont.</p>`,
+        quiz:[[
+          q("Comment dit-on \"My name is...\" en français ?", ["Je m'appelle...","J'ai...","Je suis à...","Je vais..."],0),
+          q("Quelle est la conjugaison correcte de \"être\" à la 1ère personne du singulier ?", ["suis","es","est","sommes"],0),
+          q("\"J'habite à Paris\" signifie :", ["Je vis à Paris","Je visite Paris","J'aime Paris","Je pars de Paris"],0)
+        ],[
+          q("\"Tu es\" correspond à :", ["Nous","Tu","Il","Vous"],1),
+          q("Comment demande-t-on l'âge de quelqu'un ?", ["Quel âge as-tu ?","Où habites-tu ?","Comment t'appelles-tu ?","Que fais-tu ?"],0),
+          q("\"Ils sont\" est la conjugaison de \"être\" pour :", ["Nous","Vous","Ils/elles","Je"],2)
+        ]]
+      },
+      { subject:"Débutant", module:"Bases", title:"Le vocabulaire du quotidien",
+        content:`<p>Quelques mots essentiels du quotidien : <strong>maison</strong>, <strong>famille</strong>, <strong>travail</strong>, <strong>nourriture</strong>, <strong>temps</strong>.</p>
+        <p>Exemple de phrase : <em>« Chaque matin, je prends mon petit-déjeuner en famille. »</em></p>`,
+        quiz:[[
+          q("Que signifie \"la nourriture\" ?", ["Food","House","Family","Weather"],0),
+          q("\"Le travail\" signifie :", ["Work","Play","Sleep","Travel"],0),
+          q("\"Chaque matin\" signifie :", ["Every morning","Every night","Sometimes","Never"],0)
+        ],[
+          q("\"La famille\" signifie :", ["Family","Friend","Neighbor","Colleague"],0),
+          q("\"Le petit-déjeuner\" est :", ["Breakfast","Lunch","Dinner","Snack"],0),
+          q("\"La maison\" signifie :", ["House","Car","Street","City"],0)
+        ]]
+      },
+      { subject:"Intermédiaire", module:"Grammaire", title:"Le passé composé",
+        content:`<p>Le passé composé exprime une action terminée. Il se forme avec <strong>avoir</strong> ou <strong>être</strong> + participe passé.</p>
+        <p><em>« J'ai mangé. »</em> — <em>« Je suis allé au marché. »</em></p>
+        <p>Les verbes de mouvement (aller, venir, partir...) utilisent généralement <strong>être</strong>.</p>`,
+        quiz:[[
+          q("Le passé composé se forme avec :", ["Avoir ou être + participe passé","Le futur simple","L'infinitif seul","Le présent"],0),
+          q("\"Je suis allé\" utilise l'auxiliaire :", ["Avoir","Être","Aller","Faire"],1),
+          q("\"J'ai mangé\" utilise l'auxiliaire :", ["Avoir","Être","Manger","Aller"],0)
+        ],[
+          q("Quel verbe utilise généralement \"être\" au passé composé ?", ["Manger","Venir","Parler","Regarder"],1),
+          q("Le passé composé exprime :", ["Une action terminée","Une action future","Une habitude","Un souhait"],0),
+          q("\"Elle est partie\" est correct car partir est un verbe :", ["De mouvement","D'état","Pronominal irrégulier","Au futur"],0)
+        ]]
+      },
+      { subject:"Intermédiaire", module:"Grammaire", title:"Les pronoms compléments",
+        content:`<p>Les pronoms compléments remplacent un nom déjà mentionné : <strong>le, la, les, lui, leur, en, y</strong>.</p>
+        <p><em>« Je vois Marie » → « Je la vois. »</em></p>`,
+        quiz:[[
+          q("Dans \"Je la vois\", \"la\" remplace :", ["Un nom féminin singulier déjà cité","Un verbe","Un adjectif","Une préposition"],0),
+          q("\"Lui\" remplace généralement :", ["Un complément d'objet indirect (personne)","Un lieu","Une quantité","Un adjectif"],0),
+          q("\"En\" peut remplacer :", ["Une quantité ou \"de + nom\"","Un verbe à l'infinitif","Un adjectif possessif","Rien du tout"],0)
+        ],[
+          q("\"J'y vais\" — \"y\" remplace :", ["Un lieu","Une personne","Un adjectif","Un temps"],0),
+          q("\"Je donne le livre à Paul\" → \"Je ___ donne le livre.\"", ["lui","le","en","y"],0),
+          q("Les pronoms compléments se placent généralement :", ["Avant le verbe conjugué","Toujours après le verbe","En début de phrase uniquement","Nulle part, ils sont facultatifs"],0)
+        ]]
+      },
+      { subject:"Avancé", module:"Expression", title:"Le subjonctif",
+        content:`<p>Le subjonctif exprime le doute, le souhait ou l'obligation : <em>« Il faut que tu viennes. »</em></p>
+        <p>Il se forme souvent à partir du radical de la 3e personne du pluriel au présent.</p>`,
+        quiz:[[
+          q("Le subjonctif exprime notamment :", ["Le doute, le souhait, l'obligation","Une action passée uniquement","Le futur certain","Une description physique"],0),
+          q("\"Il faut que tu ___ (venir)\" :", ["viennes","viens","viendras","venais"],0),
+          q("Le subjonctif s'utilise souvent après :", ["\"Il faut que\", \"Je veux que\"","\"Hier, je...\"","\"Demain, il...\"","Aucune expression particulière"],0)
+        ],[
+          q("\"Bien que\" est suivi :", ["Du subjonctif","De l'indicatif obligatoirement","Du futur simple","De l'impératif"],0),
+          q("\"Je souhaite qu'il ___ (réussir)\" :", ["réussisse","réussit","réussira","a réussi"],0),
+          q("Le subjonctif présent de \"être\" à la 3e personne du singulier est :", ["soit","est","sera","était"],0)
+        ]]
+      },
+      { subject:"Avancé", module:"Expression", title:"Nuances et registres de langue",
+        content:`<p>Le français dispose de plusieurs registres : <strong>familier</strong>, <strong>courant</strong>, <strong>soutenu</strong>.</p>
+        <p><em>« Bouffer » (familier) → « Manger » (courant) → « Se restaurer » (soutenu).</em></p>`,
+        quiz:[[
+          q("\"Bouffer\" appartient au registre :", ["Familier","Soutenu","Administratif","Scientifique"],0),
+          q("\"Se restaurer\" appartient au registre :", ["Soutenu","Familier","Vulgaire","Argotique"],0),
+          q("Adapter son registre de langue dépend :", ["Du contexte et de l'interlocuteur","Uniquement de l'heure de la journée","Du prix du repas","De rien du tout"],0)
+        ],[
+          q("Le registre courant est utilisé :", ["Dans la vie quotidienne standard","Uniquement à l'écrit juridique","Uniquement en poésie","Jamais à l'oral"],0),
+          q("Un texte administratif utilise plutôt un registre :", ["Soutenu","Familier","Argotique","Enfantin"],0),
+          q("\"Le bagnole\" est un terme :", ["Familier","Soutenu","Scientifique","Officiel"],0)
+        ]]
+      }
+    ]
+  },
+
+  anglais: {
+    name:"Anglais", icon:"🇬🇧",
+    desc:"From beginner to advanced: vocabulary, grammar, speaking and listening skills.",
+    lessons:[
+      { subject:"Beginner", module:"Basics", title:"Introducing yourself",
+        content:`<p>To introduce yourself in English: <em>"My name is Mad."</em> — <em>"I am twenty years old."</em> — <em>"I live in Antananarivo."</em></p>
+        <p>The verb <strong>to be</strong> is essential: I am, you are, he/she is, we are, they are.</p>`,
+        quiz:[[
+          q("How do you say \"Je m'appelle...\" in English?", ["My name is...","I have...","I am at...","I go..."],0),
+          q("\"He ___ a teacher.\"", ["is","are","am","be"],0),
+          q("\"I live in Paris\" means:", ["Je vis à Paris","Je visite Paris","J'aime Paris","Je pars de Paris"],0)
+        ],[
+          q("\"They ___ students.\"", ["are","is","am","be"],0),
+          q("How do you ask someone's age?", ["How old are you?","Where do you live?","What is your name?","What do you do?"],0),
+          q("\"We are\" is the conjugation of \"to be\" for:", ["I","You singular","We","He"],2)
+        ]]
+      },
+      { subject:"Beginner", module:"Basics", title:"Everyday vocabulary",
+        content:`<p>Essential everyday words: <strong>house</strong>, <strong>family</strong>, <strong>work</strong>, <strong>food</strong>, <strong>weather</strong>.</p>
+        <p>Example: <em>"Every morning, I have breakfast with my family."</em></p>`,
+        quiz:[[
+          q("\"La nourriture\" means:", ["Food","House","Family","Weather"],0),
+          q("\"Le travail\" means:", ["Work","Play","Sleep","Travel"],0),
+          q("\"Chaque matin\" means:", ["Every morning","Every night","Sometimes","Never"],0)
+        ],[
+          q("\"La famille\" means:", ["Family","Friend","Neighbor","Colleague"],0),
+          q("\"Le petit-déjeuner\" is:", ["Breakfast","Lunch","Dinner","Snack"],0),
+          q("\"La maison\" means:", ["House","Car","Street","City"],0)
+        ]]
+      },
+      { subject:"Intermediate", module:"Grammar", title:"The present perfect",
+        content:`<p>The present perfect expresses an action with a connection to the present: <em>"I have eaten."</em> — <em>"She has gone to the market."</em></p>
+        <p>It is formed with <strong>have/has</strong> + past participle.</p>`,
+        quiz:[[
+          q("The present perfect is formed with:", ["Have/has + past participle","Will + verb","Verb + ing only","Did + verb"],0),
+          q("\"She ___ finished her homework.\"", ["has","have","had","is"],0),
+          q("\"I have eaten\" expresses:", ["An action linked to the present","A future plan","A past habit only","A command"],0)
+        ],[
+          q("\"They ___ never been to Japan.\"", ["have","has","had","are"],0),
+          q("The present perfect often connects:", ["Past action and present result","Two future events","Two unrelated past facts","A command and a question"],0),
+          q("\"Have you ever ___ (see) this film?\"", ["seen","saw","see","seeing"],0)
+        ]]
+      },
+      { subject:"Intermediate", module:"Grammar", title:"Conditional sentences",
+        content:`<p>Conditional sentences express hypothetical situations: <em>"If it rains, I will stay home."</em> (real condition) or <em>"If I had time, I would travel."</em> (hypothetical).</p>`,
+        quiz:[[
+          q("\"If it rains, I ___ stay home.\"", ["will","would","would have","had"],0),
+          q("\"If I ___ time, I would travel.\"", ["had","have","will have","has"],0),
+          q("The first conditional expresses:", ["A realistic future possibility","An impossible past event","A general truth only","A command"],0)
+        ],[
+          q("The second conditional structure is:", ["If + past simple, would + verb","If + present, will + verb","If + will, would + verb","If + past perfect, would have + verb"],0),
+          q("\"If I were you, I would apologize\" uses:", ["Second conditional","First conditional","Zero conditional","Third conditional"],0),
+          q("The zero conditional expresses:", ["A general truth or fact","An imaginary situation","A regret about the past","A polite request"],0)
+        ]]
+      },
+      { subject:"Advanced", module:"Fluency", title:"Idiomatic expressions",
+        content:`<p>Idioms add nuance to spoken English: <em>"It's raining cats and dogs"</em> (heavy rain), <em>"break the ice"</em> (start a conversation).</p>`,
+        quiz:[[
+          q("\"It's raining cats and dogs\" means:", ["It's raining heavily","Animals are falling from the sky","It's sunny","It's snowing"],0),
+          q("\"To break the ice\" means:", ["To start a conversation in an awkward situation","To literally break ice","To end a friendship","To cancel a meeting"],0),
+          q("Idioms should generally be used:", ["In informal, natural conversation","Only in legal documents","Never in speech","Only in scientific writing"],0)
+        ],[
+          q("\"Once in a blue moon\" means:", ["Very rarely","Every night","Very often","During a full moon only"],0),
+          q("\"To hit the books\" means:", ["To study hard","To damage a book","To read for fun only","To sell books"],0),
+          q("\"Piece of cake\" means:", ["Something very easy","A dessert","A difficult task","A small argument"],0)
+        ]]
+      },
+      { subject:"Advanced", module:"Fluency", title:"Formal vs informal register",
+        content:`<p>English has different registers: <strong>formal</strong> ("I would appreciate your assistance"), <strong>informal</strong> ("Can you help me out?").</p>`,
+        quiz:[[
+          q("\"Can you help me out?\" is:", ["Informal","Formal","Legal","Academic"],0),
+          q("\"I would appreciate your assistance\" is:", ["Formal","Informal","Slang","Childish"],0),
+          q("Choosing a register depends on:", ["Context and audience","The time of day","The weather","Nothing in particular"],0)
+        ],[
+          q("A formal email typically avoids:", ["Slang and contractions","Complete sentences","Polite greetings","Clear structure"],0),
+          q("\"Gonna\" and \"wanna\" are typical of:", ["Informal spoken English","Formal written English","Legal English","Academic English"],0),
+          q("A cover letter should generally use a ___ register.", ["Formal","Informal","Slang-heavy","Childish"],0)
+        ]]
+      }
+    ]
+  },
+
+  allemand: {
+    name:"Allemand", icon:"🇩🇪",
+    desc:"Grammatik, Wortschatz und Konversation für Anfänger bis Fortgeschrittene.",
+    lessons:[
+      { subject:"Anfänger", module:"Grundlagen", title:"Sich vorstellen",
+        content:`<p>Sich auf Deutsch vorstellen: <em>„Ich heiße Mad.“</em> — <em>„Ich bin zwanzig Jahre alt.“</em> — <em>„Ich wohne in Antananarivo.“</em></p>
+        <p>Das Verb <strong>sein</strong> ist wichtig: ich bin, du bist, er/sie ist, wir sind, ihr seid, sie sind.</p>`,
+        quiz:[[
+          q("Comment dit-on « Je m'appelle... » en allemand ?", ["Ich heiße...","Ich habe...","Ich bin bei...","Ich gehe..."],0),
+          q("\"du ___\" (sein) :", ["bist","bin","ist","sind"],0),
+          q("\"Ich wohne in Berlin\" signifie :", ["Je vis à Berlin","Je visite Berlin","J'aime Berlin","Je pars de Berlin"],0)
+        ],[
+          q("\"wir ___\" (sein) :", ["sind","bin","bist","ist"],0),
+          q("Comment demande-t-on l'âge en allemand ?", ["Wie alt bist du?","Wo wohnst du?","Wie heißt du?","Was machst du?"],0),
+          q("\"sie sind\" (pluriel) correspond à :", ["Ils/elles sont","Je suis","Tu es","Il est"],0)
+        ]]
+      },
+      { subject:"Anfänger", module:"Grundlagen", title:"Der Alltag — vocabulaire quotidien",
+        content:`<p>Mots essentiels : <strong>das Haus</strong> (maison), <strong>die Familie</strong> (famille), <strong>die Arbeit</strong> (travail), <strong>das Essen</strong> (nourriture).</p>`,
+        quiz:[[
+          q("\"das Essen\" signifie :", ["La nourriture","La maison","La famille","Le temps"],0),
+          q("\"die Arbeit\" signifie :", ["Le travail","Le jeu","Le sommeil","Le voyage"],0),
+          q("\"das Haus\" signifie :", ["La maison","La voiture","La rue","La ville"],0)
+        ],[
+          q("\"die Familie\" signifie :", ["La famille","L'ami","Le voisin","Le collègue"],0),
+          q("\"das Frühstück\" signifie :", ["Le petit-déjeuner","Le déjeuner","Le dîner","Le goûter"],0),
+          q("En allemand, les noms communs s'écrivent :", ["Avec une majuscule","Toujours en minuscule","En italique","En majuscules uniquement au pluriel"],0)
+        ]]
+      },
+      { subject:"Mittelstufe", module:"Grammatik", title:"Das Perfekt",
+        content:`<p>Le Perfekt exprime une action passée à l'oral. Il se forme avec <strong>haben</strong> ou <strong>sein</strong> + participe passé.</p>
+        <p><em>« Ich habe gegessen. »</em> — <em>« Ich bin gegangen. »</em></p>`,
+        quiz:[[
+          q("Le Perfekt se forme avec :", ["haben ou sein + participe passé","Le futur simple","L'infinitif seul","Le présent uniquement"],0),
+          q("\"Ich bin gegangen\" utilise l'auxiliaire :", ["haben","sein","gehen","machen"],1),
+          q("\"Ich habe gegessen\" utilise l'auxiliaire :", ["haben","sein","essen","machen"],0)
+        ],[
+          q("Les verbes de mouvement utilisent généralement :", ["sein","haben","werden","müssen"],0),
+          q("Le Perfekt est surtout utilisé :", ["À l'oral pour le passé","Uniquement à l'écrit administratif","Pour le futur","Pour les ordres"],0),
+          q("Le participe passé de \"machen\" est :", ["gemacht","gemachen","machte","gemache"],0)
+        ]]
+      },
+      { subject:"Mittelstufe", module:"Grammatik", title:"Die Modalverben",
+        content:`<p>Les verbes de modalité expriment la possibilité, l'obligation ou le désir : <strong>können</strong> (pouvoir), <strong>müssen</strong> (devoir), <strong>wollen</strong> (vouloir).</p>
+        <p><em>« Ich muss lernen. » (Je dois apprendre.)</em></p>`,
+        quiz:[[
+          q("\"müssen\" signifie :", ["Devoir","Pouvoir","Vouloir","Aimer"],0),
+          q("\"können\" signifie :", ["Pouvoir","Devoir","Vouloir","Savoir uniquement"],0),
+          q("\"Ich ___ lernen\" (devoir) :", ["muss","kann","will","mag"],0)
+        ],[
+          q("\"wollen\" signifie :", ["Vouloir","Pouvoir","Devoir","Détester"],0),
+          q("Les verbes de modalité sont généralement suivis :", ["D'un infinitif en fin de phrase","D'un adjectif","D'un nom propre uniquement","De rien"],0),
+          q("\"Er kann gut singen\" signifie :", ["Il sait bien chanter","Il doit chanter","Il veut chanter","Il déteste chanter"],0)
+        ]]
+      },
+      { subject:"Fortgeschritten", module:"Konversation", title:"Der Konjunktiv II",
+        content:`<p>Le Konjunktiv II exprime l'irréel ou le souhait : <em>« Ich würde gerne reisen. » (J'aimerais voyager.)</em></p>`,
+        quiz:[[
+          q("Le Konjunktiv II exprime :", ["L'irréel ou le souhait","Un fait certain","Le passé simple","Un ordre direct"],0),
+          q("\"Ich ___ gerne reisen\" (souhait poli) :", ["würde","werde","wurde","war"],0),
+          q("Le Konjunktiv II est souvent utilisé pour :", ["Les demandes polies","Les faits scientifiques","Les ordres militaires","Les dates historiques"],0)
+        ],[
+          q("\"Wenn ich Zeit hätte, würde ich reisen\" exprime :", ["Une condition irréelle","Un fait présent","Un ordre","Une certitude absolue"],0),
+          q("\"hätte\" est le Konjunktiv II de :", ["haben","sein","werden","können"],0),
+          q("Le Konjunktiv II sert aussi à :", ["Faire des suppositions polies","Décrire un lieu géographique","Compter en allemand","Nommer les couleurs"],0)
+        ]]
+      },
+      { subject:"Fortgeschritten", module:"Konversation", title:"Sprachregister im Deutschen",
+        content:`<p>L'allemand distingue aussi les registres : <strong>familier</strong> (« Alter, was geht? »), <strong>soutenu</strong> (« Guten Tag, wie geht es Ihnen? »).</p>`,
+        quiz:[[
+          q("\"Alter, was geht?\" appartient au registre :", ["Familier","Soutenu","Administratif","Scientifique"],0),
+          q("\"Guten Tag, wie geht es Ihnen?\" appartient au registre :", ["Soutenu","Familier","Argotique","Enfantin"],0),
+          q("Le pronom \"Sie\" (vouvoiement) est utilisé dans un contexte :", ["Formel","Familier uniquement","Enfantin","Argotique"],0)
+        ],[
+          q("Le pronom \"du\" est utilisé dans un contexte :", ["Informel, avec des proches","Uniquement administratif","Uniquement juridique","Jamais à l'oral"],0),
+          q("Adapter son registre en allemand dépend :", ["De l'interlocuteur et du contexte","De la météo","De l'heure uniquement","De rien"],0),
+          q("Un entretien d'embauche en allemand utilise plutôt :", ["Le vouvoiement (Sie) et un registre soutenu","Le tutoiement (du) systématique","Un langage argotique","Aucune règle particulière"],0)
+        ]]
+      }
+    ]
+  }
+};
+
+// Attribution d'identifiants stables à chaque leçon (ordre = ordre de déblocage)
+Object.keys(DATA).forEach(fid=>{
+  DATA[fid].lessons.forEach((l,i)=>{ l.id = fid+"-l"+i; l.formationId = fid; });
+});
+
+/* ---------------------------- ÉTAT / STORAGE ---------------------------- */
+const STORAGE_KEY = "elearningmad_progress_v1";
+const THEME_KEY = "elearningmad_theme";
+
+function defaultProgress(){
+  const p = {formations:{}};
+  Object.keys(DATA).forEach(fid=>{
+    p.formations[fid] = { completedLessons:[], quizState:{} };
+  });
+  return p;
+}
+
+function loadProgress(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return defaultProgress();
+    const parsed = JSON.parse(raw);
+    // fusion défensive avec les formations par défaut (au cas où DATA évolue)
+    const base = defaultProgress();
+    Object.keys(base.formations).forEach(fid=>{
+      if(parsed.formations && parsed.formations[fid]) base.formations[fid] = parsed.formations[fid];
+    });
+    return base;
+  }catch(e){
+    console.error("Erreur de lecture de la progression :", e);
+    return defaultProgress();
+  }
+}
+
+function saveProgress(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.progress));
+  }catch(e){
+    console.error("Erreur de sauvegarde :", e);
+    showToast("⚠️ Impossible de sauvegarder la progression");
+  }
+}
+
+function loadTheme(){
+  try{ return localStorage.getItem(THEME_KEY) || "light"; }
+  catch(e){ return "light"; }
+}
+function saveTheme(t){
+  try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
+}
+
+const state = {
+  route: "home",
+  progress: loadProgress(),
+  currentFormation: null,
+  currentLessonId: null,
+  quiz: null // {lessonId, versionIndex, questions, index, wrongCount, answers}
+};
+
+/* ---------------------------- UTILITAIRES ---------------------------- */
+function fLessons(fid){ return DATA[fid].lessons; }
+
+function isLessonCompleted(fid, lessonId){
+  return state.progress.formations[fid].completedLessons.includes(lessonId);
+}
+
+function isLessonUnlocked(fid, index){
+  if(index === 0) return true;
+  const prevLesson = fLessons(fid)[index-1];
+  return isLessonCompleted(fid, prevLesson.id);
+}
+
+function formationPercent(fid){
+  const total = fLessons(fid).length;
+  const done = state.progress.formations[fid].completedLessons.length;
+  return total === 0 ? 0 : Math.round((done/total)*100);
+}
+
+function getQuizState(fid, lessonId){
+  const fs = state.progress.formations[fid];
+  if(!fs.quizState[lessonId]) fs.quizState[lessonId] = { fails:0, version:0, passed:false, attempts:0 };
+  return fs.quizState[lessonId];
+}
+
+function showToast(msg, duration=2600){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(()=> t.classList.remove("show"), duration);
+}
+
+function escapeHtml(str){
+  const d = document.createElement("div");
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+/* ---------------------------- ROUTAGE ---------------------------- */
+function navigate(route, opts={}){
+  state.route = route;
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+  document.getElementById("view-"+route).classList.add("active");
+  document.querySelectorAll(".nav-link[data-route]").forEach(n=>{
+    n.classList.toggle("active", n.dataset.route === route);
+  });
+  document.getElementById("mainNav").classList.remove("open");
+
+  if(route === "home") renderHome();
+  if(route === "formations") renderFormations();
+  if(route === "course") renderCourse(opts.formationId || state.currentFormation, opts.lessonId);
+  if(route === "progression") renderProgression();
+
+  window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+}
+
+/* ---------------------------- RENDU : HOME ---------------------------- */
+function renderHome(){
+  const strip = document.getElementById("homeStrip");
+  strip.innerHTML = Object.keys(DATA).map(fid=>{
+    const f = DATA[fid];
+    return `<div class="strip-card" data-fid="${fid}" role="button" tabindex="0">
+      <div class="flag">${f.icon}</div>
+      <div class="flabel">${f.name}</div>
+    </div>`;
+  }).join("");
+  strip.querySelectorAll(".strip-card").forEach(card=>{
+    card.addEventListener("click", ()=> navigate("course", {formationId: card.dataset.fid}));
+    card.addEventListener("keypress", e=>{ if(e.key==="Enter") card.click(); });
+  });
+}
+
+/* ---------------------------- RENDU : FORMATIONS ---------------------------- */
+function renderFormations(){
+  const grid = document.getElementById("formationGrid");
+  grid.innerHTML = Object.keys(DATA).map(fid=>{
+    const f = DATA[fid];
+    const pct = formationPercent(fid);
+    const started = pct > 0;
+    return `<div class="formation-card">
+      <div class="ficon">${f.icon}</div>
+      <h3>${f.name}</h3>
+      <p class="fdesc">${f.desc}</p>
+      <div class="progress-label"><span>Progression</span><span>${pct}%</span></div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <button class="btn btn-primary btn-block" data-fid="${fid}">${started ? "Continuer" : "Commencer"}</button>
+    </div>`;
+  }).join("");
+  grid.querySelectorAll("button[data-fid]").forEach(btn=>{
+    btn.addEventListener("click", ()=> navigate("course", {formationId: btn.dataset.fid}));
+  });
+}
+
+/* ---------------------------- RENDU : COURSE (OUTLINE + LEÇON) ---------------------------- */
+function renderCourse(fid, lessonId){
+  if(!fid) fid = Object.keys(DATA)[0];
+  state.currentFormation = fid;
+  const f = DATA[fid];
+  document.getElementById("courseTitle").textContent = f.icon + "  " + f.name;
+  document.getElementById("courseBreadcrumb").innerHTML =
+    `<span>${f.name}</span>`;
+
+  // Regrouper les leçons par matière/niveau pour le sommaire
+  const groups = [];
+  f.lessons.forEach((l, idx)=>{
+    let g = groups.find(g=>g.subject===l.subject);
+    if(!g){ g = {subject:l.subject, lessons:[]}; groups.push(g); }
+    g.lessons.push({...l, index: idx});
+  });
+
+  const outline = document.getElementById("courseOutline");
+  outline.innerHTML = groups.map((g, gi)=>{
+    const anyCurrentInGroup = g.lessons.some(l=>l.id===lessonId);
+    return `<details class="subject-group" ${ (gi===0 || anyCurrentInGroup) ? "open":""}>
+      <summary>${g.subject} <span style="font-size:.75rem; color:var(--text-soft); font-weight:500;">(${g.lessons.filter(l=>isLessonCompleted(fid,l.id)).length}/${g.lessons.length})</span></summary>
+      ${g.lessons.map(l=>{
+        const unlocked = isLessonUnlocked(fid, l.index);
+        const done = isLessonCompleted(fid, l.id);
+        const isCurrent = l.id === lessonId;
+        let icon = done ? "✅" : (unlocked ? "🔓" : "🔒");
+        return `<div class="lesson-item ${isCurrent?'current':''} ${unlocked?'':'locked'}" data-lid="${l.id}">
+          <span class="lstate">${icon}</span><span>${l.title}</span>
+        </div>`;
+      }).join("")}
+    </details>`;
+  }).join("");
+
+  outline.querySelectorAll(".lesson-item").forEach(item=>{
+    item.addEventListener("click", ()=>{
+      if(item.classList.contains("locked")){
+        showToast("🔒 Terminez la leçon précédente (quiz à 100%) pour débloquer celle-ci");
+        return;
+      }
+      renderCourse(fid, item.dataset.lid);
+    });
+  });
+
+  // Sélectionner la leçon à afficher
+  let lesson = null, lessonIndex = -1;
+  if(lessonId){
+    lessonIndex = f.lessons.findIndex(l=>l.id===lessonId);
+    lesson = f.lessons[lessonIndex];
+  }
+  if(!lesson){
+    // première leçon non terminée et débloquée, sinon la première
+    lessonIndex = f.lessons.findIndex((l,i)=> isLessonUnlocked(fid,i) && !isLessonCompleted(fid,l.id));
+    if(lessonIndex === -1) lessonIndex = 0;
+    lesson = f.lessons[lessonIndex];
+  }
+  state.currentLessonId = lesson.id;
+
+  const wrap = document.getElementById("lessonPanelWrap");
+  const done = isLessonCompleted(fid, lesson.id);
+  const qs = getQuizState(fid, lesson.id);
+
+  wrap.innerHTML = `<div class="lesson-panel">
+    <span class="lesson-tag">${lesson.subject} · ${lesson.module}</span>
+    <h2>${lesson.title} ${done ? '<span style="color:var(--success); font-size:1rem;">✅ Terminée</span>' : ''}</h2>
+    <div class="lesson-content">${lesson.content}</div>
+    ${qs.fails>0 && !done ? `<div class="attempts-note">Tentatives précédentes échouées : ${qs.attempts}. ${qs.fails>=1 ? 'Le quiz changera de version après 3 échecs consécutifs.' : ''}</div>` : ""}
+    <div class="lesson-actions">
+      <button class="btn btn-primary" id="startQuizBtn">${done ? "🔁 Repasser le quiz" : "📝 Faire le quiz"}</button>
+      ${lessonIndex < f.lessons.length-1 ? `<button class="btn btn-outline" id="nextLessonBtn" ${isLessonUnlocked(fid,lessonIndex+1)?'':'disabled'}>Leçon suivante →</button>` : `<span style="color:var(--text-soft); font-size:.85rem; align-self:center;">🎉 Dernière leçon de la formation</span>`}
+    </div>
+  </div>`;
+
+  document.getElementById("startQuizBtn").addEventListener("click", ()=> startQuiz(fid, lesson.id));
+  const nextBtn = document.getElementById("nextLessonBtn");
+  if(nextBtn){
+    nextBtn.addEventListener("click", ()=>{
+      if(nextBtn.disabled){ showToast("🔒 Réussissez le quiz de cette leçon (100%) pour continuer"); return; }
+      renderCourse(fid, f.lessons[lessonIndex+1].id);
+    });
+  }
+}
+
+/* ---------------------------- QUIZ ---------------------------- */
+function startQuiz(fid, lessonId){
+  const lesson = DATA[fid].lessons.find(l=>l.id===lessonId);
+  const qs = getQuizState(fid, lessonId);
+  const versionIndex = qs.version % lesson.quiz.length;
+  state.quiz = {
+    fid, lessonId,
+    versionIndex,
+    questions: lesson.quiz[versionIndex],
+    index: 0,
+    wrongInThisAttempt: false,
+    resultsPerQuestion: []
+  };
+  navigate("quiz");
+  renderQuizQuestion();
+}
+
+function renderQuizQuestion(){
+  const qz = state.quiz;
+  const lesson = DATA[qz.fid].lessons.find(l=>l.id===qz.lessonId);
+  const question = qz.questions[qz.index];
+  const wrap = document.getElementById("quizWrap");
+
+  const dots = qz.questions.map((_,i)=>{
+    let cls = "qdot";
+    if(i < qz.resultsPerQuestion.length){ cls += qz.resultsPerQuestion[i] ? " filled" : " wrong"; }
+    return `<div class="${cls}"></div>`;
+  }).join("");
+
+  wrap.innerHTML = `<div class="quiz-card">
+    <div class="quiz-meta">
+      <span>${lesson.title} · Version ${String.fromCharCode(65+qz.versionIndex)}</span>
+      <span>Question ${qz.index+1}/${qz.questions.length}</span>
+    </div>
+    <div class="quiz-progress-dots">${dots}</div>
+    <div class="question-block">
+      <h3>${question.text}</h3>
+      <div class="options-list" id="optionsList">
+        ${question.options.map((opt,i)=>`<button class="option-btn" data-i="${i}"><span class="letter">${String.fromCharCode(65+i)}</span><span>${opt}</span></button>`).join("")}
+      </div>
+    </div>
+  </div>`;
+
+  document.querySelectorAll("#optionsList .option-btn").forEach(btn=>{
+    btn.addEventListener("click", ()=> answerQuestion(parseInt(btn.dataset.i)));
+  });
+}
+
+function answerQuestion(choiceIndex){
+  const qz = state.quiz;
+  const question = qz.questions[qz.index];
+  const correct = choiceIndex === question.correct;
+  qz.resultsPerQuestion.push(correct);
+  if(!correct) qz.wrongInThisAttempt = true;
+
+  document.querySelectorAll("#optionsList .option-btn").forEach((btn,i)=>{
+    btn.disabled = true;
+    if(i === question.correct) btn.classList.add("correct");
+    else if(i === choiceIndex) btn.classList.add("incorrect");
+  });
+
+  setTimeout(()=>{
+    if(qz.index < qz.questions.length - 1){
+      qz.index++;
+      renderQuizQuestion();
+    }else{
+      finishQuiz();
+    }
+  }, 900);
+}
+
+function finishQuiz(){
+  const qz = state.quiz;
+  const qs = getQuizState(qz.fid, qz.lessonId);
+  const allCorrect = qz.resultsPerQuestion.every(r=>r===true);
+  const scoreCount = qz.resultsPerQuestion.filter(r=>r).length;
+  const total = qz.resultsPerQuestion.length;
+  qs.attempts++;
+
+  const wrap = document.getElementById("quizWrap");
+
+  if(allCorrect){
+    qs.fails = 0;
+    qs.passed = true;
+    const fs = state.progress.formations[qz.fid];
+    if(!fs.completedLessons.includes(qz.lessonId)) fs.completedLessons.push(qz.lessonId);
+    saveProgress();
+
+    wrap.innerHTML = `<div class="quiz-card quiz-result">
+      <div class="result-emoji">🎉</div>
+      <h3>Quiz réussi — 100%</h3>
+      <p>${scoreCount}/${total} bonnes réponses. La leçon suivante est débloquée !</p>
+      <div class="lesson-actions" style="justify-content:center;">
+        <button class="btn btn-primary" id="backToCourseBtn">Retour à la formation</button>
+      </div>
+    </div>`;
+    document.getElementById("backToCourseBtn").addEventListener("click", ()=> navigate("course", {formationId: qz.fid, lessonId: qz.lessonId}));
+    showToast("🎉 Leçon suivante débloquée !");
+  }else{
+    qs.fails++;
+    let versionChanged = false;
+    let note = `Une seule erreur suffit pour échouer : la réussite doit être de 100%.`;
+    if(qs.fails >= 3){
+      qs.version = (qs.version + 1) % DATA[qz.fid].lessons.find(l=>l.id===qz.lessonId).quiz.length;
+      qs.fails = 0;
+      versionChanged = true;
+    }
+    saveProgress();
+
+    wrap.innerHTML = `<div class="quiz-card quiz-result">
+      <div class="result-emoji">❌</div>
+      <h3>Quiz échoué</h3>
+      <p>${scoreCount}/${total} bonnes réponses — il fallait ${total}/${total} pour réussir.</p>
+      <div class="attempts-note ${versionChanged?'warn':''}">${versionChanged ? "⚠️ 3 échecs atteints : une nouvelle version du quiz a été générée avec des questions différentes." : note}</div>
+      <div class="lesson-actions" style="justify-content:center;">
+        <button class="btn btn-primary" id="retryBtn">Recommencer le quiz</button>
+        <button class="btn btn-outline" id="backLessonBtn">Revoir la leçon</button>
+      </div>
+    </div>`;
+    document.getElementById("retryBtn").addEventListener("click", ()=> startQuiz(qz.fid, qz.lessonId));
+    document.getElementById("backLessonBtn").addEventListener("click", ()=> navigate("course", {formationId: qz.fid, lessonId: qz.lessonId}));
+    showToast(versionChanged ? "⚠️ Quiz changé après 3 échecs" : "❌ Quiz échoué, réessayez");
+  }
+}
+
+/* ---------------------------- PROGRESSION ---------------------------- */
+function renderProgression(){
+  const list = document.getElementById("progList");
+  list.innerHTML = Object.keys(DATA).map(fid=>{
+    const f = DATA[fid];
+    const pct = formationPercent(fid);
+    const groups = {};
+    f.lessons.forEach(l=>{
+      groups[l.subject] = groups[l.subject] || [];
+      groups[l.subject].push(l);
+    });
+    const detailHtml = Object.keys(groups).map(subj=>{
+      return `<div style="margin-bottom:8px;"><strong>${subj}</strong><ul>${groups[subj].map(l=>{
+        const done = isLessonCompleted(fid, l.id);
+        return `<li>${done?"✅":"⬜"} ${l.title}</li>`;
+      }).join("")}</ul></div>`;
+    }).join("");
+
+    return `<div class="prog-row">
+      <div class="prog-row-head" data-toggle="${fid}" style="cursor:pointer;">
+        <span class="ic">${f.icon}</span>
+        <span class="name">${f.name}</span>
+        <span class="pct">${pct}%</span>
+      </div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${pct}%"></div></div>
+      <div class="prog-detail" id="detail-${fid}">${detailHtml}</div>
+    </div>`;
+  }).join("");
+
+  list.querySelectorAll("[data-toggle]").forEach(head=>{
+    head.addEventListener("click", ()=>{
+      document.getElementById("detail-"+head.dataset.toggle).classList.toggle("open");
+    });
+  });
+}
+
+/* ---------------------------- RÉINITIALISATION ---------------------------- */
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  document.getElementById("confirmModal").classList.add("show");
+});
+document.getElementById("cancelReset").addEventListener("click", ()=>{
+  document.getElementById("confirmModal").classList.remove("show");
+});
+document.getElementById("confirmReset").addEventListener("click", ()=>{
+  state.progress = defaultProgress();
+  saveProgress();
+  document.getElementById("confirmModal").classList.remove("show");
+  showToast("🗑️ Progression réinitialisée");
+  renderProgression();
+});
+
+/* ---------------------------- THEME ---------------------------- */
+function applyTheme(t){
+  document.body.setAttribute("data-theme", t);
+  document.getElementById("themeToggle").textContent = t === "dark" ? "☀️" : "🌙";
+  saveTheme(t);
+}
+document.getElementById("themeToggle").addEventListener("click", ()=>{
+  const current = document.body.getAttribute("data-theme");
+  applyTheme(current === "dark" ? "light" : "dark");
+});
+document.getElementById("setLightBtn").addEventListener("click", ()=> applyTheme("light"));
+document.getElementById("setDarkBtn").addEventListener("click", ()=> applyTheme("dark"));
+
+/* ---------------------------- NAVIGATION GLOBALE ---------------------------- */
+document.querySelectorAll("[data-route]").forEach(el=>{
+  el.addEventListener("click", ()=> navigate(el.dataset.route));
+});
+document.getElementById("mobileNavToggle").addEventListener("click", ()=>{
+  document.getElementById("mainNav").classList.toggle("open");
+});
+
+/* ---------------------------- INITIALISATION ---------------------------- */
+applyTheme(loadTheme());
+navigate("home");
+</script>
+</body>
+</html>
